@@ -5,34 +5,31 @@ using UnityEngine.InputSystem;
 #endif
 
 /// <summary>
-/// Состояния мишени: Ready -> Hit -> Recover (плавно) -> вспышка -> Ready.
-/// Работает через MaterialPropertyBlock, поэтому не создаёт копий материала.
-/// Вызов из других скриптов: GetComponent<TargetFeedback>().Hit();
+/// Мишень: Ready -> Hit -> плавное восстановление -> вспышка света -> Ready.
+/// Тест в Play Mode: клавиша H.
 /// </summary>
 [RequireComponent(typeof(Renderer))]
 public class TargetFeedback : MonoBehaviour
 {
-    [Header("Имена свойств (Reference из Blackboard Shader Graph)")]
+    [Header("Имена свойств шейдера")]
     [SerializeField] string dissolveProperty = "_Dissolve_Amount";
     [SerializeField] string emissionProperty = "_Emission_Intensity";
 
-    [Header("Состояние Ready")]
+    [Header("Ready (целая)")]
     [SerializeField] float readyDissolve = 0f;
     [SerializeField] float readyEmission = 0f;
 
-    [Header("Состояние Hit")]
-    [SerializeField] float hitDissolve = 0.25f;
+    [Header("Hit (попадание)")]
+    [SerializeField] float hitDissolve = 0.26f;
     [SerializeField] float hitEmission = 2000f;
-    [SerializeField] float hitHoldTime = 0.6f;   // сколько держим Hit до восстановления
+    [SerializeField] float hitHoldTime = 0.6f;
 
     [Header("Восстановление")]
     [SerializeField] float recoverTime = 1.5f;
-    [SerializeField] AnimationCurve recoverCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("Вспышка в конце")]
-    [SerializeField] float flashDissolve = 0.06f; // при 0 кромка почти не видна, нужен небольшой порог
-    [SerializeField] float flashEmission = 1500f;
-    [SerializeField] float flashTime = 0.15f;
+    [Header("Вспышка в конце (свет)")]
+    [SerializeField] Light flashLight;      // сюда перетащить Flash_Light
+    [SerializeField] float flashTime = 0.2f;
 
     Renderer rend;
     MaterialPropertyBlock block;
@@ -46,11 +43,11 @@ public class TargetFeedback : MonoBehaviour
         dissolveId = Shader.PropertyToID(dissolveProperty);
         emissionId = Shader.PropertyToID(emissionProperty);
         Apply(readyDissolve, readyEmission);
+        if (flashLight) flashLight.enabled = false;
     }
 
     void Update()
     {
-        // Быстрый тест в Play Mode: клавиша H
 #if ENABLE_INPUT_SYSTEM
         if (Keyboard.current != null && Keyboard.current.hKey.wasPressedThisFrame) Hit();
 #else
@@ -67,25 +64,27 @@ public class TargetFeedback : MonoBehaviour
 
     IEnumerator HitRoutine()
     {
+        if (flashLight) flashLight.enabled = false;
+
         // 1. Hit
         Apply(hitDissolve, hitEmission);
         yield return new WaitForSeconds(hitHoldTime);
 
-        // 2. Recover: плавно Hit -> Ready
+        // 2. Плавное восстановление
         for (float t = 0; t < recoverTime; t += Time.deltaTime)
         {
-            float k = recoverCurve.Evaluate(t / recoverTime);
+            float k = Mathf.SmoothStep(0f, 1f, t / recoverTime);
             Apply(Mathf.Lerp(hitDissolve, readyDissolve, k),
                   Mathf.Lerp(hitEmission, readyEmission, k));
             yield return null;
         }
-
-        // 3. Короткая вспышка
-        Apply(flashDissolve, flashEmission);
-        yield return new WaitForSeconds(flashTime);
-
-        // 4. Ready
         Apply(readyDissolve, readyEmission);
+
+        // 3. Вспышка: короткий яркий свет на целой мишени
+        if (flashLight) flashLight.enabled = true;
+        yield return new WaitForSeconds(flashTime);
+        if (flashLight) flashLight.enabled = false;
+
         routine = null;
     }
 
