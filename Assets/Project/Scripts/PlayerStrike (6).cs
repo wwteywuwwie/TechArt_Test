@@ -7,20 +7,22 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Удар по ЛКМ: процедурный замах оружия (без Animator).
 /// Попадание определяется по реальному касанию клинка с мишенью,
-/// эффект появляется в точке касания. Вешается на PlayerArmature.
+/// эффект появляется в точке, где клинок входит в поверхность.
+/// Вешается на PlayerArmature.
 /// </summary>
 public class PlayerStrike : MonoBehaviour
 {
     [Header("Оружие")]
     [SerializeField] Transform weaponPivot;          // пустой объект в плече, меч - его дочерний
-    [SerializeField] float bladeLength = 1f;         // длина клинка от pivot вдоль оси Z
-    [SerializeField] float bladeRadius = 0.08f;      // "толщина" для проверки касания
-    [SerializeField] float restAngle = 20f;
-    [SerializeField] float windupAngle = -80f;
-    [SerializeField] float strikeAngle = 60f;
-    [SerializeField] float windupTime = 0.10f;
-    [SerializeField] float swingTime = 0.12f;
-    [SerializeField] float recoverTime = 0.20f;
+    [SerializeField] float bladeLength = 1.4f;       // длина клинка от pivot вдоль оси Z
+    [SerializeField] float bladeRadius = 0.15f;      // "толщина" для проверки касания
+    [SerializeField] Vector3 swingAxis = Vector3.up; // up = горизонтальный взмах, (1,0,0) = сверху вниз
+    [SerializeField] float restAngle = 50f;
+    [SerializeField] float windupAngle = 90f;        // замах вправо
+    [SerializeField] float strikeAngle = -50f;       // рубит справа налево
+    [SerializeField] float windupTime = 0.12f;
+    [SerializeField] float swingTime = 0.16f;
+    [SerializeField] float recoverTime = 0.22f;
 
     [Header("Попадание")]
     [SerializeField] LayerMask hitMask = ~0;         // выбрать слой Target
@@ -73,7 +75,7 @@ public class PlayerStrike : MonoBehaviour
 
     void SetAngle(float angle)
     {
-        if (weaponPivot) weaponPivot.localRotation = Quaternion.Euler(angle, 0f, 0f);
+        if (weaponPivot) weaponPivot.localRotation = Quaternion.AngleAxis(angle, swingAxis);
     }
 
     bool TryContact()
@@ -90,23 +92,44 @@ public class PlayerStrike : MonoBehaviour
             var target = col.GetComponentInParent<TargetFeedback>();
             if (target == null) continue;
 
-            // Ближайшая к клинку точка на мишени = место контакта
-            Vector3 contact = col.ClosestPoint(b);
-            float best = float.MaxValue;
-            for (int s = 0; s <= SamplePoints; s++)
+            Vector3 contact;
+            Vector3 normal;
+
+            // Основной способ: точка, где клинок (луч от pivot к кончику) входит в поверхность
+            Vector3 dir = (b - a).normalized;
+            if (col.Raycast(new Ray(a, dir), out RaycastHit surface, bladeLength + bladeRadius))
             {
-                Vector3 p = Vector3.Lerp(a, b, s / (float)SamplePoints);
-                Vector3 cp = col.ClosestPoint(p);
-                float d = (cp - p).sqrMagnitude;
-                if (d < best) { best = d; contact = cp; }
+                contact = surface.point;
+                normal = surface.normal;
+            }
+            else
+            {
+                // Запасной способ (касание боком клинка): ближайшая точка на мишени
+                contact = col.ClosestPoint(b);
+                float best = float.MaxValue;
+                for (int s = 0; s <= SamplePoints; s++)
+                {
+                    Vector3 p = Vector3.Lerp(a, b, s / (float)SamplePoints);
+                    Vector3 cp = col.ClosestPoint(p);
+                    float d = (cp - p).sqrMagnitude;
+                    if (d < best) { best = d; contact = cp; }
+                }
+                Vector3 c = col.bounds.center;
+                normal = contact - new Vector3(c.x, contact.y, c.z);
+                normal = normal.sqrMagnitude > 0.0001f ? normal.normalized : -transform.forward;
             }
 
-            // Нормаль для цилиндра: от оси мишени к точке контакта
-            Vector3 c = col.bounds.center;
-            Vector3 normal = contact - new Vector3(c.x, contact.y, c.z);
-            normal = normal.sqrMagnitude > 0.0001f ? normal.normalized : -transform.forward;
+            // Подтягиваем контакт на видимую поверхность: луч от груди героя к точке контакта
+            Vector3 chest = transform.position + Vector3.up * 1.2f;
+            Vector3 toContact = contact - chest;
+            if (toContact.sqrMagnitude > 0.0001f &&
+                col.Raycast(new Ray(chest, toContact.normalized), out RaycastHit snap, toContact.magnitude + 1f))
+            {
+                contact = snap.point;
+                normal = snap.normal;
+            }
 
-            target.Hit();
+            target.Hit(contact);
 
             if (impactVfxPrefab)
             {
