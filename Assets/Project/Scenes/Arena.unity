@@ -611,8 +611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441482e8936e35048a1dffac814e3ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.StaticLightingSky
-  m_Profile: {fileID: 0}
-  m_StaticLightingSkyUniqueID: 0
+  m_Profile: {fileID: 11400000, guid: a5aff7c56eb66e24bbede99a1a01de5a, type: 2}
+  m_StaticLightingSkyUniqueID: 3
   m_StaticLightingCloudsUniqueID: 0
   m_StaticLightingVolumetricClouds: 0
   bounces: 1
@@ -705,7 +705,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 4.5918e-41}
+  m_BoundingSphereOverride: {x: 0, y: NaN, z: 2.1e-44, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -3268,33 +3268,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 157.49423
-    'sh[ 1]': -77.815994
-    'sh[ 2]': 27.881775
-    'sh[ 3]': 28.009815
-    'sh[ 4]': 0.016556958
-    'sh[ 5]': -0.022025103
-    'sh[ 6]': 0.69398516
-    'sh[ 7]': 1.2053044
-    'sh[ 8]': 1.8181362
-    'sh[ 9]': 74.79202
-    'sh[10]': -37.98527
-    'sh[11]': 12.556646
-    'sh[12]': 12.615207
-    'sh[13]': -0.0075492263
-    'sh[14]': -0.020375613
-    'sh[15]': 0.27571073
-    'sh[16]': 0.5427279
-    'sh[17]': 0.7115802
-    'sh[18]': 30.570753
-    'sh[19]': -16.14487
-    'sh[20]': 4.7141895
-    'sh[21]': 4.740634
-    'sh[22]': -0.012551221
-    'sh[23]': -0.014545508
-    'sh[24]': 0.08061941
-    'sh[25]': 0.20465767
-    'sh[26]': 0.199649
+    'sh[ 0]': 114.05338
+    'sh[ 1]': 27.05881
+    'sh[ 2]': 28.252579
+    'sh[ 3]': 29.478504
+    'sh[ 4]': 0.8162038
+    'sh[ 5]': -0.010294774
+    'sh[ 6]': 2.1286023
+    'sh[ 7]': 1.1092786
+    'sh[ 8]': 6.8829045
+    'sh[ 9]': 38.11195
+    'sh[10]': 11.275403
+    'sh[11]': 9.76608
+    'sh[12]': 10.121294
+    'sh[13]': 0.2793047
+    'sh[14]': 0.043546185
+    'sh[15]': 0.625569
+    'sh[16]': 0.38004088
+    'sh[17]': 2.028824
+    'sh[18]': 25.054438
+    'sh[19]': 12.655122
+    'sh[20]': 4.6265855
+    'sh[21]': 4.8561296
+    'sh[22]': 0.13810807
+    'sh[23]': 0.03106985
+    'sh[24]': 0.08305145
+    'sh[25]': 0.22080544
+    'sh[26]': 0.35427117
   m_SHValidForCapturePosition: {x: 0, y: 2, z: 0}
   m_SHValidForSourcePosition: {x: 0, y: 2, z: 0}
   m_ReflectionProbeVersion: 10
