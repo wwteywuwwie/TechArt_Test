@@ -64,7 +64,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
-    - _Dry_Smoothness: 0.15
+    - _Dry_Smoothness: 0.2
     - _DstBlend: 0
     - _DstBlend2: 0
     - _EnableBlendModePreserveSpecularLighting: 1
@@ -76,8 +76,8 @@ Material:
     - _Normal_Strength: 1
     - _OpaqueCullMode: 2
     - _PerPixelSorting: 0
-    - _Puddle_Scale: 0.8
-    - _Puddle_Softness: 0.08
+    - _Puddle_Scale: 1
+    - _Puddle_Softness: 0.15
     - _Puddle_Threshold: 0.55
     - _RayTracing: 0
     - _ReceivesSSR: 1
@@ -107,14 +107,14 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
-    - _Wet_Darkening: 0.45
-    - _Wet_Smoothness: 0.95
+    - _Wet_Darkening: 0.75
+    - _Wet_Smoothness: 0.75
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _Base_Color: {r: 0.3018868, g: 0.27862823, b: 0.252047, a: 1}
+    - _Base_Color: {r: 1, g: 1, b: 1, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Puddle_Offset: {r: 0, g: 0, b: 0, a: 0}

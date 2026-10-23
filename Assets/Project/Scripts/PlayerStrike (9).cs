@@ -32,8 +32,9 @@ public class PlayerStrike : MonoBehaviour
     [Header("След меча (можно пусто)")]
     [SerializeField] TrailRenderer trail;            // Trail Renderer на кончике клинка
 
-    [Header("Эффект контакта (можно пусто)")]
-    [SerializeField] GameObject impactVfxPrefab;
+    [Header("Эффект контакта")]
+    [SerializeField] ImpactVfxPool vfxPool;          // предпочтительно: пул без Instantiate/Destroy
+    [SerializeField] GameObject impactVfxPrefab;     // запасной вариант, если пул не назначен
     [SerializeField] float vfxLifetime = 2f;
 
     const int SamplePoints = 6;
@@ -66,11 +67,11 @@ public class PlayerStrike : MonoBehaviour
         swinging = true;
         hitThisSwing = false;
 
-        yield return Rotate(restAngle, windupAngle, windupTime, false);   // замах
-        if (trail) { trail.Clear(); trail.emitting = true; }              // след только на время удара
-        yield return Rotate(windupAngle, strikeAngle, swingTime, true);   // удар: при касании замирает
+        yield return Rotate(restAngle, windupAngle, windupTime, false);    // замах
+        if (trail) { trail.Clear(); trail.emitting = true; }               // след только на время удара
+        yield return Rotate(windupAngle, strikeAngle, swingTime, true);    // удар: при касании замирает
         if (trail) trail.emitting = false;
-        yield return Rotate(currentAngle, restAngle, recoverTime, false); // возврат из текущей точки
+        yield return Rotate(currentAngle, restAngle, recoverTime, false);  // возврат из текущей точки
 
         swinging = false;
     }
@@ -151,9 +152,14 @@ public class PlayerStrike : MonoBehaviour
 
             target.Hit(contact);
 
-            if (impactVfxPrefab)
+            Quaternion rot = Quaternion.LookRotation(normal);
+            if (vfxPool)
             {
-                var vfx = Instantiate(impactVfxPrefab, contact, Quaternion.LookRotation(normal));
+                vfxPool.Play(contact, rot);
+            }
+            else if (impactVfxPrefab)
+            {
+                var vfx = Instantiate(impactVfxPrefab, contact, rot);
                 Destroy(vfx, vfxLifetime);
             }
             return true;

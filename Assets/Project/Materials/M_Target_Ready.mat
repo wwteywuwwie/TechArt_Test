@@ -105,7 +105,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _Base_Color: {r: 0.22745098, g: 0.22745098, b: 0.22745098, a: 1}
+    - _Base_Color: {r: 0.4392157, g: 0.4392157, b: 0.4392157, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _Edge_Emission_Color: {r: 1, g: 0.008716814, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

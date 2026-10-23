@@ -98,7 +98,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 10.5
+    m_Value: 8.5
   compensation:
     m_OverrideState: 0
     m_Value: 0
@@ -336,7 +336,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   skyAmbientMode:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   planetRadius:
     m_OverrideState: 0
@@ -404,13 +404,13 @@ MonoBehaviour:
     m_Value: 0
   maximumHeight:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 25
   meanFreePath:
     m_OverrideState: 1
     m_Value: 80
   enableVolumetricFog:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   albedo:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -418,8 +418,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   depthExtent:
-    m_OverrideState: 0
-    m_Value: 64
+    m_OverrideState: 1
+    m_Value: 60
   denoisingMode:
     m_OverrideState: 0
     m_Value: 2
@@ -471,7 +471,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 10.5
+    m_Value: 8
   multiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -495,13 +495,13 @@ MonoBehaviour:
     m_Value: 0
   top:
     m_OverrideState: 1
-    m_Value: {r: 0.010329823, g: 0.015996292, b: 0.039546248, a: 1}
+    m_Value: {r: 0.078431375, g: 0.11764706, b: 0.23529412, a: 1}
   middle:
     m_OverrideState: 1
-    m_Value: {r: 0.25415218, g: 0.07036011, b: 0.023153365, a: 1}
+    m_Value: {r: 0.57758063, g: 0.10224175, b: 0.03189604, a: 1}
   bottom:
     m_OverrideState: 1
-    m_Value: {r: 0.023153365, g: 0.010329823, b: 0.0074990317, a: 1}
+    m_Value: {r: 0.012983031, g: 0.010329823, b: 0.015996292, a: 1}
   gradientDiffusion:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 3
