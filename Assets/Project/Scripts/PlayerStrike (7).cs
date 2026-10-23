@@ -27,6 +27,9 @@ public class PlayerStrike : MonoBehaviour
     [Header("Попадание")]
     [SerializeField] LayerMask hitMask = ~0;         // выбрать слой Target
 
+    [Header("След меча (можно пусто)")]
+    [SerializeField] TrailRenderer trail;            // Trail Renderer на кончике клинка
+
     [Header("Эффект контакта (можно пусто)")]
     [SerializeField] GameObject impactVfxPrefab;
     [SerializeField] float vfxLifetime = 2f;
@@ -36,7 +39,11 @@ public class PlayerStrike : MonoBehaviour
     bool swinging;
     bool hitThisSwing;
 
-    void Start() => SetAngle(restAngle);
+    void Start()
+    {
+        SetAngle(restAngle);
+        if (trail) trail.emitting = false;
+    }
 
     void Update()
     {
@@ -55,7 +62,9 @@ public class PlayerStrike : MonoBehaviour
         hitThisSwing = false;
 
         yield return Rotate(restAngle, windupAngle, windupTime, false);   // замах
+        if (trail) { trail.Clear(); trail.emitting = true; }              // след только на время удара
         yield return Rotate(windupAngle, strikeAngle, swingTime, true);   // удар: проверяем касание
+        if (trail) trail.emitting = false;
         yield return Rotate(strikeAngle, restAngle, recoverTime, false);  // возврат
 
         swinging = false;

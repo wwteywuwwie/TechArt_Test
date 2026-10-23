@@ -55,13 +55,13 @@ Material:
     - _CullMode: 2
     - _CullModeForward: 2
     - _DepthOffsetEnable: 0
-    - _Dissolve_Amount: 0.4
+    - _Dissolve_Amount: 0.361
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _DstBlend2: 0
-    - _Edge_Width: 0.2
+    - _Edge_Width: 0.036
     - _Emission_Intensity: 2000
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
@@ -107,7 +107,7 @@ Material:
     m_Colors:
     - _Base_Color: {r: 0.22745098, g: 0.22745098, b: 0.22745098, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
-    - _Edge_Emission_Color: {r: 1, g: 0.1441285, b: 0.010329823, a: 1}
+    - _Edge_Emission_Color: {r: 1.4142135, g: 0.024632802, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Hit_Position: {r: 0, g: 1, b: 3.6, a: 0}
   m_BuildTextureStacks: []

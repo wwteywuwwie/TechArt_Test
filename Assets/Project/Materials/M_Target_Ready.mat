@@ -61,7 +61,7 @@ Material:
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _DstBlend2: 0
-    - _Edge_Width: 0.05
+    - _Edge_Width: 0.2
     - _Emission_Intensity: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
@@ -107,7 +107,7 @@ Material:
     m_Colors:
     - _Base_Color: {r: 0.22745098, g: 0.22745098, b: 0.22745098, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
-    - _Edge_Emission_Color: {r: 1, g: 0.1441285, b: 0.010329823, a: 1}
+    - _Edge_Emission_Color: {r: 1, g: 0.008716814, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Hit_Position: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
