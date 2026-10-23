@@ -195,7 +195,7 @@ Material:
     - _HeightPoMAmplitude: 2
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
-    - _InvTilingScale: 1
+    - _InvTilingScale: 0.25
     - _Ior: 1.5
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
@@ -259,8 +259,8 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.41960785, g: 0.40784314, b: 0.38431373, a: 1}
-    - _Color: {r: 0.41960782, g: 0.4078431, b: 0.3843137, a: 1}
+    - _BaseColor: {r: 0.38679248, g: 0.36416876, b: 0.3302332, a: 1}
+    - _Color: {r: 0.38679245, g: 0.36416873, b: 0.33023316, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
