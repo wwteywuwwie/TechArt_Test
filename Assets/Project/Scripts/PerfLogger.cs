@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,8 +6,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #endif
 
-/// Замер производительности: F9 запускает запись кадров на заданное время,
-/// затем пишет медиану, среднее, 1% low и сборки мусора в Console и perf.csv.
+/// Р—Р°РјРµСЂ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё: F9 Р·Р°РїСѓСЃРєР°РµС‚ Р·Р°РїРёСЃСЊ РєР°РґСЂРѕРІ РЅР° Р·Р°РґР°РЅРЅРѕРµ РІСЂРµРјСЏ,
+/// Р·Р°С‚РµРј РїРёС€РµС‚ РјРµРґРёР°РЅСѓ, СЃСЂРµРґРЅРµРµ, 1% low Рё СЃР±РѕСЂРєРё РјСѓСЃРѕСЂР° РІ Console Рё perf.csv.
 public class PerfLogger : MonoBehaviour
 {
     [SerializeField] string scenarioName = "Gameplay";
@@ -18,12 +18,12 @@ public class PerfLogger : MonoBehaviour
     float elapsed;
     int gcStart;
     long memStart;
-    string lastResult = "F9 - старт замера";
+    string lastResult = "F9 - СЃС‚Р°СЂС‚ Р·Р°РјРµСЂР°";
 
     void Awake()
     {
-        QualitySettings.vSyncCount = 0;      // VSync выключен по ТЗ
-        Application.targetFrameRate = -1;    // без ограничения FPS
+        QualitySettings.vSyncCount = 0;      // VSync РІС‹РєР»СЋС‡РµРЅ РїРѕ РўР—
+        Application.targetFrameRate = -1;    // Р±РµР· РѕРіСЂР°РЅРёС‡РµРЅРёСЏ FPS
     }
 
     void Update()
@@ -75,7 +75,7 @@ public class PerfLogger : MonoBehaviour
 
     void OnGUI()
     {
-        if (recording) return;               // во время замера ничего не рисуем
+        if (recording) return;               // РІРѕ РІСЂРµРјСЏ Р·Р°РјРµСЂР° РЅРёС‡РµРіРѕ РЅРµ СЂРёСЃСѓРµРј
         GUI.Label(new Rect(10, 10, 900, 25), lastResult);
     }
 }

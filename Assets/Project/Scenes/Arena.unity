@@ -3764,7 +3764,7 @@ MonoBehaviour:
     m_Bits: 64
   trail: {fileID: 526096622}
   impactVfxPrefab: {fileID: 2663266189521528442, guid: d9062969f49f88144985d0c5b7e610aa, type: 3}
-  vfxLifetime: 2
+  vfxLifetime: 1
 --- !u!4 &2020212265 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8338988566280778637, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
