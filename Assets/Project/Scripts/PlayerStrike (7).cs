@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 /// Удар по ЛКМ: процедурный замах оружия (без Animator).
 /// Попадание определяется по реальному касанию клинка с мишенью,
 /// эффект появляется в точке, где клинок входит в поверхность.
+/// В момент попадания клинок на миг замирает (hit pause) и возвращается из точки контакта.
 /// Вешается на PlayerArmature.
 /// </summary>
 public class PlayerStrike : MonoBehaviour
@@ -23,6 +24,7 @@ public class PlayerStrike : MonoBehaviour
     [SerializeField] float windupTime = 0.12f;
     [SerializeField] float swingTime = 0.16f;
     [SerializeField] float recoverTime = 0.22f;
+    [SerializeField] float hitPause = 0.06f;         // пауза клинка при попадании (сек)
 
     [Header("Попадание")]
     [SerializeField] LayerMask hitMask = ~0;         // выбрать слой Target
@@ -36,11 +38,14 @@ public class PlayerStrike : MonoBehaviour
 
     const int SamplePoints = 6;
     readonly Collider[] overlapBuffer = new Collider[8];   // без аллокаций (нет мусора для GC)
+    WaitForSeconds hitWait;                                // кэш, чтобы не плодить мусор
+    float currentAngle;
     bool swinging;
     bool hitThisSwing;
 
     void Start()
     {
+        hitWait = new WaitForSeconds(hitPause);
         SetAngle(restAngle);
         if (trail) trail.emitting = false;
     }
@@ -63,9 +68,9 @@ public class PlayerStrike : MonoBehaviour
 
         yield return Rotate(restAngle, windupAngle, windupTime, false);   // замах
         if (trail) { trail.Clear(); trail.emitting = true; }              // след только на время удара
-        yield return Rotate(windupAngle, strikeAngle, swingTime, true);   // удар: проверяем касание
+        yield return Rotate(windupAngle, strikeAngle, swingTime, true);   // удар: при касании замирает
         if (trail) trail.emitting = false;
-        yield return Rotate(strikeAngle, restAngle, recoverTime, false);  // возврат
+        yield return Rotate(currentAngle, restAngle, recoverTime, false); // возврат из текущей точки
 
         swinging = false;
     }
@@ -76,6 +81,11 @@ public class PlayerStrike : MonoBehaviour
         {
             SetAngle(Mathf.Lerp(from, to, t / time));
             if (checkContact && !hitThisSwing) hitThisSwing = TryContact();
+            if (checkContact && hitThisSwing)
+            {
+                yield return hitWait;   // клинок на миг замирает в точке контакта
+                yield break;            // остаток удара не доигрываем: клинок не идёт сквозь мишень
+            }
             yield return null;
         }
         SetAngle(to);
@@ -84,6 +94,7 @@ public class PlayerStrike : MonoBehaviour
 
     void SetAngle(float angle)
     {
+        currentAngle = angle;
         if (weaponPivot) weaponPivot.localRotation = Quaternion.AngleAxis(angle, swingAxis);
     }
 
