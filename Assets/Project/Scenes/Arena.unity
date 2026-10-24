@@ -415,13 +415,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 187120927}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00011922346, y: -0.965925, z: 0.25881916, w: -0.0012914329}
+  m_LocalRotation: {x: -0.00036440662, y: -0.90630704, z: 0.42261812, w: -0.0011662452}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1902250236}
-  m_LocalEulerAnglesHint: {x: 30, y: -180.161, z: -0.029}
+  m_LocalEulerAnglesHint: {x: 50, y: -180.161, z: -0.029}
 --- !u!114 &187120929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,7 +752,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 4000
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 250253.58, y: 14681.103, z: 1.8331856e+31, w: -1.2516712e-38}
+  m_BoundingSphereOverride: {x: 5.7886086e+22, y: 2.00222e-19, z: 7.3604004e+22, w: 8.528342e-33}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -1467,12 +1467,12 @@ MonoBehaviour:
   SMAAQuality: 2
   dithering: 0
   stopNaNs: 0
-  taaSharpenStrength: 0.5
+  taaSharpenStrength: 0.7
   TAAQuality: 1
   taaSharpenMode: 0
   taaRingingReduction: 0
-  taaHistorySharpening: 0.35
-  taaAntiFlicker: 0.5
+  taaHistorySharpening: 0.37
+  taaAntiFlicker: 0.721
   taaMotionVectorRejection: 0
   taaAntiHistoryRinging: 0
   taaBaseBlendFactor: 0.875
@@ -2740,7 +2740,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 0.49803922, g: 0.6117647, b: 0.8392157, a: 1}
-  m_Intensity: 500
+  m_Intensity: 1100
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -3315,33 +3315,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 12.291865
-    'sh[ 1]': 4.57857
-    'sh[ 2]': 0.79245025
-    'sh[ 3]': 2.6917982
-    'sh[ 4]': 0.06923405
-    'sh[ 5]': 0.043621097
-    'sh[ 6]': -0.02118938
-    'sh[ 7]': 0.10921694
-    'sh[ 8]': 0.32191977
-    'sh[ 9]': 11.323486
-    'sh[10]': 6.4279966
-    'sh[11]': 0.2624063
-    'sh[12]': 0.75573933
-    'sh[13]': 0.044504765
-    'sh[14]': 0.05363737
-    'sh[15]': -0.06581519
-    'sh[16]': 0.03753659
-    'sh[17]': -0.09929604
-    'sh[18]': 20.519444
-    'sh[19]': 12.916848
-    'sh[20]': 0.24113724
-    'sh[21]': 0.5013639
-    'sh[22]': 0.07231943
-    'sh[23]': 0.10382683
-    'sh[24]': -0.1345013
-    'sh[25]': 0.033578742
-    'sh[26]': -0.3565436
+    'sh[ 0]': 12.248098
+    'sh[ 1]': 4.6026955
+    'sh[ 2]': 0.78328395
+    'sh[ 3]': 2.679163
+    'sh[ 4]': 0.0710836
+    'sh[ 5]': 0.044676073
+    'sh[ 6]': -0.020480892
+    'sh[ 7]': 0.108090036
+    'sh[ 8]': 0.32108334
+    'sh[ 9]': 11.297292
+    'sh[10]': 6.44422
+    'sh[11]': 0.25738862
+    'sh[12]': 0.75281423
+    'sh[13]': 0.04525822
+    'sh[14]': 0.05443949
+    'sh[15]': -0.06542386
+    'sh[16]': 0.03762368
+    'sh[17]': -0.09938014
+    'sh[18]': 20.48708
+    'sh[19]': 12.937502
+    'sh[20]': 0.23542789
+    'sh[21]': 0.49912772
+    'sh[22]': 0.07316693
+    'sh[23]': 0.1047999
+    'sh[24]': -0.13405026
+    'sh[25]': 0.033938907
+    'sh[26]': -0.3564866
   m_SHValidForCapturePosition: {x: 0, y: 2, z: 0}
   m_SHValidForSourcePosition: {x: 0, y: 2, z: 0}
   m_ReflectionProbeVersion: 10

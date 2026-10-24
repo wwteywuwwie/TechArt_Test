@@ -76,9 +76,9 @@ Material:
     - _Normal_Strength: 1
     - _OpaqueCullMode: 2
     - _PerPixelSorting: 0
-    - _Puddle_Scale: 1
+    - _Puddle_Scale: 3
     - _Puddle_Softness: 0.15
-    - _Puddle_Threshold: 0.55
+    - _Puddle_Threshold: 0.45
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
