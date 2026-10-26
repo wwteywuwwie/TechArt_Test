@@ -1,18 +1,17 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
-/// <summary>
-/// Мишень: Ready -> Hit (пятно вокруг точки контакта) -> Recover (пятно зарастает,
-/// кромка остывает: яркий оранжевый -> тёмно-красный) -> Ready.
-/// Hit(worldPoint) вызывается из PlayerStrike. Тест в Play Mode: клавиша H.
-/// Работает через MaterialPropertyBlock (без копий материала).
-/// </summary>
-[RequireComponent(typeof(Renderer))]
+// Мишень: Ready -> Hit -> Recover -> Ready. Hit(worldPoint) вызывается из PlayerStrike.
+// Тест в Play Mode: клавиша H.
 public class TargetFeedback : MonoBehaviour
 {
+    [Header("Движение мишени")]
+    [SerializeField] TargetKnockback knockback;     // если пусто, ищется на этом объекте или в дочерних
+
     [Header("Имена свойств шейдера (Reference в Blackboard)")]
     [SerializeField] string dissolveProperty = "_Dissolve_Amount";
     [SerializeField] string emissionProperty = "_Emission_Intensity";
@@ -32,34 +31,45 @@ public class TargetFeedback : MonoBehaviour
 
     [Header("Recover (остывание)")]
     [SerializeField] float recoverTime = 4f;
-    [Tooltip("Цвет кромки в конце остывания: множители R,G,B от горячего цвета (красный остаётся)")]
+    [Tooltip("Цвет кромки в конце остывания: множители R,G,B от горячего цвета")]
     [SerializeField] Vector3 coolTint = new Vector3(0.6f, 0.05f, 0.02f);
-    [Tooltip("Dissolve, до которого пятно сжимается в основную фазу остывания (ниже ~0.3 пятна уже не видно)")]
+    [Tooltip("Dissolve, до которого пятно сжимается в основную фазу остывания")]
     [SerializeField] float visibleFloorDissolve = 0.35f;
     [Tooltip("Во сколько раз падает яркость к концу основной фазы")]
     [SerializeField] float coolEmissionFactor = 0.3f;
     [Tooltip("Доля времени восстановления на финальное быстрое угасание")]
     [SerializeField] float fadeOutShare = 0.15f;
 
-    Renderer rend;
+    Renderer[] rends;                // только те, у кого есть свойства растворения
     MaterialPropertyBlock block;
     int dissolveId, emissionId, edgeColorId, hitPosId, hitRadiusId;
-    Color hotColor;                 // берётся из материала (Edge Emission Color)
+    Color hotColor;
     Vector3 lastHitPoint;
     Coroutine routine;
+    WaitForSeconds holdWait;
 
     void Awake()
     {
-        rend = GetComponent<Renderer>();
+        if (!knockback) knockback = GetComponentInChildren<TargetKnockback>();
+
         block = new MaterialPropertyBlock();
+        holdWait = new WaitForSeconds(hitHoldTime);
         dissolveId = Shader.PropertyToID(dissolveProperty);
         emissionId = Shader.PropertyToID(emissionProperty);
         edgeColorId = Shader.PropertyToID(edgeColorProperty);
         hitPosId = Shader.PropertyToID(hitPositionProperty);
         hitRadiusId = Shader.PropertyToID(hitRadiusProperty);
 
-        var mat = rend.sharedMaterial;
-        hotColor = (mat != null && mat.HasProperty(edgeColorId)) ? mat.GetColor(edgeColorId) : new Color(1f, 0.15f, 0.01f);
+        var found = new List<Renderer>();
+        hotColor = new Color(1f, 0.15f, 0.01f);
+        foreach (var r in GetComponentsInChildren<Renderer>())
+        {
+            var mat = r.sharedMaterial;
+            if (mat == null || !mat.HasProperty(dissolveId)) continue;
+            if (found.Count == 0 && mat.HasProperty(edgeColorId)) hotColor = mat.GetColor(edgeColorId);
+            found.Add(r);
+        }
+        rends = found.ToArray();
 
         Apply(readyDissolve, readyEmission, hotColor);
     }
@@ -74,9 +84,15 @@ public class TargetFeedback : MonoBehaviour
 #endif
     }
 
-    public void Hit(Vector3 worldPoint)
+    public void Hit(Vector3 worldPoint) { Hit(worldPoint, worldPoint); }
+
+    // attacker - позиция героя, от него мишень отбрасывает назад
+    public void Hit(Vector3 worldPoint, Vector3 attacker)
     {
         lastHitPoint = worldPoint;
+        if (knockback) knockback.Play(attacker);
+
+        if (rends.Length == 0) return;
         if (routine != null) StopCoroutine(routine);
         routine = StartCoroutine(HitRoutine());
     }
@@ -85,11 +101,9 @@ public class TargetFeedback : MonoBehaviour
     {
         Color coolColor = new Color(hotColor.r * coolTint.x, hotColor.g * coolTint.y, hotColor.b * coolTint.z, hotColor.a);
 
-        // 2. Удар: яркое горячее пятно
         Apply(hitDissolve, hitEmission, hotColor);
-        yield return new WaitForSeconds(hitHoldTime);
+        yield return holdWait;
 
-        // 3. Восстановление: пятно медленно сжимается, кромка остывает, в конце быстро гаснет
         for (float t = 0; t < recoverTime; t += Time.deltaTime)
         {
             float u = t / recoverTime;
@@ -102,19 +116,22 @@ public class TargetFeedback : MonoBehaviour
             yield return null;
         }
 
-        // 1. Готова
         Apply(readyDissolve, readyEmission, hotColor);
         routine = null;
     }
 
     void Apply(float dissolve, float emission, Color edgeColor)
     {
-        rend.GetPropertyBlock(block);
-        block.SetFloat(dissolveId, dissolve);
-        block.SetFloat(emissionId, emission);
-        block.SetColor(edgeColorId, edgeColor);
-        block.SetVector(hitPosId, lastHitPoint);
-        block.SetFloat(hitRadiusId, hitRadius);
-        rend.SetPropertyBlock(block);
+        for (int i = 0; i < rends.Length; i++)
+        {
+            var r = rends[i];
+            r.GetPropertyBlock(block);
+            block.SetFloat(dissolveId, dissolve);
+            block.SetFloat(emissionId, emission);
+            block.SetColor(edgeColorId, edgeColor);
+            block.SetVector(hitPosId, lastHitPoint);
+            block.SetFloat(hitRadiusId, hitRadius);
+            r.SetPropertyBlock(block);
+        }
     }
 }

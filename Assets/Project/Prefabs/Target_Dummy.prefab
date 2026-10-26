@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7157287813211068855}
   - component: {fileID: 680074486183928292}
   - component: {fileID: 2610021314406776223}
-  - component: {fileID: 2085520853290587089}
   m_Layer: 6
   m_Name: Target_Dummy
   m_TagString: Untagged
@@ -115,31 +114,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &2085520853290587089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8054183016071710235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91fc4dc9c22d26a41a448cddb515e650, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetFeedback
-  dissolveProperty: _Dissolve_Amount
-  emissionProperty: _Emission_Intensity
-  edgeColorProperty: _Edge_Emission_Color
-  hitPositionProperty: _Hit_Position
-  hitRadiusProperty: _Hit_Radius
-  readyDissolve: 0
-  readyEmission: 0
-  hitDissolve: 0.65
-  hitEmission: 2000
-  hitRadius: 0.3
-  hitHoldTime: 0.8
-  recoverTime: 4
-  coolTint: {x: 1, y: 55, z: 55}
-  visibleFloorDissolve: 0.25
-  coolEmissionFactor: 0.3
-  fadeOutShare: 0.15

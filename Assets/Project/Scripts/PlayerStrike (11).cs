@@ -150,7 +150,7 @@ public class PlayerStrike : MonoBehaviour
                 normal = snap.normal;
             }
 
-            target.Hit(contact);
+            target.Hit(contact, transform.position);
 
             Quaternion rot = Quaternion.LookRotation(normal);
             if (vfxPool)
