@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Мишень: Ready -> Hit (сильный отброс назад) -> Recovering (медленное покачивание в разные стороны) -> Ready
-public class TargetKnockback : MonoBehaviour
+public class TargetKnockback : TargetReaction
 {
     public enum State { Ready, Hit, Recovering }
 
@@ -35,7 +35,7 @@ public class TargetKnockback : MonoBehaviour
     }
 
     // attacker - позиция героя: мишень отбрасывает строго от него
-    public void Play(Vector3 attacker)
+    public override void Play(Vector3 attacker)
     {
         Vector3 away = transform.position - attacker;
         away.y = 0f;

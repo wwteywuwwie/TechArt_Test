@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 public class TargetFeedback : MonoBehaviour
 {
     [Header("Движение мишени")]
-    [SerializeField] TargetKnockback knockback;     // если пусто, ищется на этом объекте или в дочерних
+    [SerializeField] TargetReaction reaction;       // если пусто, ищется на этом объекте или в дочерних
 
     [Header("Имена свойств шейдера (Reference в Blackboard)")]
     [SerializeField] string dissolveProperty = "_Dissolve_Amount";
@@ -44,13 +44,15 @@ public class TargetFeedback : MonoBehaviour
     MaterialPropertyBlock block;
     int dissolveId, emissionId, edgeColorId, hitPosId, hitRadiusId;
     Color hotColor;
-    Vector3 lastHitPoint;
+    Vector3[] localHit;              // точка попадания в локальных координатах каждой части
+    float[] localRadius;             // радиус пятна в локальных единицах каждой части
+    bool[] affected;                 // true только у частей, которых реально задел удар
     Coroutine routine;
     WaitForSeconds holdWait;
 
     void Awake()
     {
-        if (!knockback) knockback = GetComponentInChildren<TargetKnockback>();
+        if (!reaction) reaction = GetComponentInChildren<TargetReaction>();
 
         block = new MaterialPropertyBlock();
         holdWait = new WaitForSeconds(hitHoldTime);
@@ -64,12 +66,21 @@ public class TargetFeedback : MonoBehaviour
         hotColor = new Color(1f, 0.15f, 0.01f);
         foreach (var r in GetComponentsInChildren<Renderer>())
         {
-            var mat = r.sharedMaterial;
-            if (mat == null || !mat.HasProperty(dissolveId)) continue;
+            // ищем материал с растворением в любом слоте, а не только в первом
+            Material mat = null;
+            foreach (var m in r.sharedMaterials)
+            {
+                if (m != null && m.HasProperty(dissolveId)) { mat = m; break; }
+            }
+            if (mat == null) continue;
             if (found.Count == 0 && mat.HasProperty(edgeColorId)) hotColor = mat.GetColor(edgeColorId);
             found.Add(r);
         }
         rends = found.ToArray();
+        localHit = new Vector3[rends.Length];
+        localRadius = new float[rends.Length];
+        affected = new bool[rends.Length];
+        for (int i = 0; i < localRadius.Length; i++) localRadius[i] = hitRadius;
 
         Apply(readyDissolve, readyEmission, hotColor);
     }
@@ -89,8 +100,24 @@ public class TargetFeedback : MonoBehaviour
     // attacker - позиция героя, от него мишень отбрасывает назад
     public void Hit(Vector3 worldPoint, Vector3 attacker)
     {
-        lastHitPoint = worldPoint;
-        if (knockback) knockback.Play(attacker);
+        for (int i = 0; i < rends.Length; i++)
+        {
+            // притягиваем точку к самой части, а не к общему Box Collider мишени
+            Vector3 p = rends[i].bounds.ClosestPoint(worldPoint);
+
+            // растворяется только та часть, которая лежит в радиусе удара
+            affected[i] = (p - worldPoint).sqrMagnitude <= hitRadius * hitRadius;
+
+            // в локальных координатах части, чтобы пятно ехало вместе с ней
+            localHit[i] = rends[i].transform.InverseTransformPoint(p);
+
+            // радиус в метрах -> в локальные единицы этой части (учёт Scale)
+            Vector3 s = rends[i].transform.lossyScale;
+            float avg = (Mathf.Abs(s.x) + Mathf.Abs(s.y) + Mathf.Abs(s.z)) / 3f;
+            localRadius[i] = hitRadius / Mathf.Max(avg, 0.0001f);
+        }
+
+        if (reaction) reaction.Play(attacker);
 
         if (rends.Length == 0) return;
         if (routine != null) StopCoroutine(routine);
@@ -126,11 +153,12 @@ public class TargetFeedback : MonoBehaviour
         {
             var r = rends[i];
             r.GetPropertyBlock(block);
-            block.SetFloat(dissolveId, dissolve);
-            block.SetFloat(emissionId, emission);
+            bool on = affected[i];
+            block.SetFloat(dissolveId, on ? dissolve : readyDissolve);
+            block.SetFloat(emissionId, on ? emission : readyEmission);
             block.SetColor(edgeColorId, edgeColor);
-            block.SetVector(hitPosId, lastHitPoint);
-            block.SetFloat(hitRadiusId, hitRadius);
+            block.SetVector(hitPosId, localHit[i]);
+            block.SetFloat(hitRadiusId, localRadius[i]);
             r.SetPropertyBlock(block);
         }
     }
