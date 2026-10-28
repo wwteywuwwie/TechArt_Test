@@ -70,7 +70,7 @@ Material:
     - _Hit_Radius: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 2
-    - _Noise_Scale: 35
+    - _Noise_Scale: 25
     - _OpaqueCullMode: 2
     - _PerPixelSorting: 0
     - _RayTracing: 0

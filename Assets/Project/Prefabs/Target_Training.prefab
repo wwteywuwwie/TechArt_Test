@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2802319933279457490
 Transform:
@@ -50,7 +50,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5929930394710087262
 Transform:
@@ -101,6 +101,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 66cf5ecea6cc85f419afdc503892988e, type: 2}
+  - {fileID: 2100000, guid: 8d02b055d4676eb42af7c254ad1f91a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,14 +157,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6570755411674704056}
-  - component: {fileID: 4369976123811016691}
-  - component: {fileID: 9081977602027653766}
+  - component: {fileID: 4428600727149266139}
+  - component: {fileID: 2094538347057338512}
   m_Layer: 6
   m_Name: Target_Training
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6570755411674704056
 Transform:
@@ -173,15 +174,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7185884981437950453}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.85, y: 0.12, z: 3.60159}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.99954706, z: -0, w: 0.030095557}
+  m_LocalPosition: {x: 6.68, y: 0.01699999, z: -2.29}
+  m_LocalScale: {x: 0.64882463, y: 0.6488247, z: 0.64882463}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2802319933279457490}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4369976123811016691
+  m_LocalEulerAnglesHint: {x: 0, y: -176.551, z: 0}
+--- !u!114 &4428600727149266139
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,19 +191,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7185884981437950453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66eabcba216ba5b4e8c93b106d18810f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b111a5010a4dfa4a8e8462bdb3f99ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetKnockback
   visual: {fileID: 2802319933279457490}
-  hitAngle: 45
-  hitTime: 0.12
-  recoverTime: 5
+  hitAngle: 75
+  hitTime: 0.15
+  recoverTime: 8
   swayFrequency: 0.5
   swayDecay: 0.8
   settleShare: 0.4
   sideAmount: 0.6
   sideFrequencyMult: 1.35
---- !u!114 &9081977602027653766
+--- !u!114 &2094538347057338512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,10 +212,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7185884981437950453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fe4953ded91c114a9e5cbf56b6fc198, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a5423e2da87f0d4b987a216ed952b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetFeedback
-  knockback: {fileID: 0}
+  reaction: {fileID: 0}
   dissolveProperty: _Dissolve_Amount
   emissionProperty: _Emission_Intensity
   edgeColorProperty: _Edge_Emission_Color
@@ -248,7 +249,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8973076903110073259
 Transform:
@@ -299,6 +300,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 6f6cfe5936a60f64689f5cc21daf6d55, type: 2}
+  - {fileID: 2100000, guid: 8d02b055d4676eb42af7c254ad1f91a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
